@@ -1,0 +1,49 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with hybrid balance and PCI-DSS compliant saved payment tokens",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "tier": { "type": "string" },
+        "balanceUSD": { "type": "number" },
+        "savedPaymentMethods": {
+          "type": "array",
+          "description": "Tokenized payment methods (QiCard, Visa, MasterCard)"
+        }
+      },
+      "required": ["uid", "email"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer purchase transaction record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "amountUSD": { "type": "number" },
+        "serviceName": { "type": "string" },
+        "packageTier": { "type": "string" },
+        "playerId": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "amountUSD", "paymentMethod", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "entity": "User",
+      "description": "Customer record storing profile, internal wallet balance, and tokenized payment instruments"
+    },
+    "/users/{userId}/orders/{orderId}": {
+      "entity": "Order",
+      "description": "Customer purchase transactions placed via GamePay"
+    }
+  }
+}

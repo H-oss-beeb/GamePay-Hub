@@ -1,0 +1,6 @@
+{
+  "name": "GamePay B2B",
+  "description": "منصة GamePay B2B مصممة خصيصاً لتجار الجملة والوكلاء للألعاب مع منظومة تحكم بالخدمات والطلبات.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

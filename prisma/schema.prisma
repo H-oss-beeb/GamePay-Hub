@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String   @id @default(uuid())
+  pinHash   String
+  createdAt DateTime @default(now())
+}
+
+model Employee {
+  id                  String   @id @default(uuid())
+  name                String
+  token               String   @unique
+  isRevoked           Boolean  @default(false)
+  completedOrdersCount Int      @default(0)
+  failedOrdersCount   Int      @default(0)
+  rating              Float    @default(5.0)
+  orders              RechargeOrder[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model RechargeOrder {
+  id                  String   @id @default(uuid())
+  playerId            String
+  gameType            String
+  packageDetails      String
+  quantity            Int      @default(1)
+  status              OrderStatus @default(PENDING)
+  claimedByEmployeeId String?
+  claimedBy           Employee? @relation(fields: [claimedByEmployeeId], references: [id])
+  receiptUrl          String?
+  adminDownloadedReceipt Boolean @default(false)
+  completedAt         DateTime?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  action      String
+  employeeId  String?
+  details     String?
+  createdAt   DateTime @default(now())
+}
